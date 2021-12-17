@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">  
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/css/signup.css" type = "text/css">
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/connect.js"></script>
+</head>
+<body>
+	<!-- This is a simple example template with a form that has a single input field. 
+		   You'll need something similar for the login page -->
+<form action = "/createAccount" method = "post">
+    <div class="form-group">
+        <label>First name</label>
+        <input type="text" class="form-control" name="firstName" placeholder="John">
+    </div>
+    <div class="form-group">
+        <label for="Last Name">Last name</label>
+        <input type="text" class="form-control" name="lastName" placeholder="Doe">
+    </div>
+    <div class="form-group">
+        <label for="Username">Username</label>
+        <input type="text" class="form-control" name="username" placeholder="Username">
+    </div>
+  <div class="form-group">
+    <label for="Password">Password</label>
+    <input type="password" class="form-control" name="password" placeholder="Password">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" name="email" placeholder="Email">
+  </div>
+  
+  <div id="list1" class="dropdown-check-list" tabindex="100">
+    <span class="anchor">Select Categories of Interest</span>
+    <ul class="items">
+      <li><input type = "checkbox" name = "check1" id = 'CRIME'/> CRIME </li>
+      <li><input type = "checkbox" name = "check2" id = 'ENTERTAINMENT'/>ENTERTAINMENT</li>
+      <li><input type = "checkbox" name = "check3" id = 'WORLD NEWS'/>WORLD NEWS</li>
+      <li><input type = "checkbox" name = "check4" id = 'IMPACT'/>IMPACT</li>
+      <li><input type = "checkbox" name = "check5" id = 'POLITICS'/>POLITICS</li>
+      <li><input type = "checkbox" name = "check6" id = 'WEIRD NEWS'/>WEIRD NEWS</li>
+      <li><input type = "checkbox" name = "check7" id = 'BLACK VOICES'/>BLACK VOICES</li>
+      <li><input type = "checkbox" name = "check8" id = 'WOMEN'/>WOMEN</li>
+      <li><input type = "checkbox" name = "check9" id = 'COMEDY'/>COMEDY</li>
+      <li><input type = "checkbox" name = "check10" id = 'QUEER VOICES'/>QUEER VOICES</li>
+      <li><input type = "checkbox" name = "check11" id = 'SPORTS'/>SPORTS</li>
+      <li><input type = "checkbox" name = "check12" id = 'BUSINESS'/>BUSINESS</li>
+      <li><input type = "checkbox" name = "check13" id = 'TRAVEL'/>TRAVEL</li>
+      <li><input type = "checkbox" name = "check14" id = 'MEDIA'/>MEDIA</li>
+      <li><input type = "checkbox" name = "check15" id = 'TECH'/>TECH</li>
+      <li><input type = "checkbox" name = "check16" id = 'RELIGION'/>RELIGION</li>
+      <li><input type = "checkbox" name = "check17" id = 'SCIENCE'/>SCIENCE</li>
+      <li><input type = "checkbox" name = "check18" id = 'LATINO VOICES'/>LATINO VOICES</li>
+      <li><input type = "checkbox" name = "check19" id = 'EDUCATION'/>EDUCATION</li>
+      <li><input type = "checkbox" name = "check20" id = 'COLLEGE'/>COLLEGE</li>
+      <li><input type = "checkbox" name = "check21" id = 'PARENTS'/>PARENTS</li>
+      <li><input type = "checkbox" name = "check22" id = 'ARTS & CULTURE'/>ARTS & CULTURE</li>
+      <li><input type = "checkbox" name = "check23" id = 'STYLE'/>STYLE</li>
+      <li><input type = "checkbox" name = "check24" id = 'GREEN'/>GREEN</li>
+      <li><input type = "checkbox" name = "check25" id = 'TASTE'/>TASTE</li>
+      <li><input type = "checkbox" name = "check26" id = 'HEALTHY LIVING'/>HEALTHY LIVING</li>
+      <li><input type = "checkbox" name = "check27" id = 'THE WORLDPOST'/>THE WORLDPOST</li>
+      <li><input type = "checkbox" name = "check28" id = 'GOOD NEWS'/>GOOD NEWS</li>
+      <li><input type = "checkbox" name = "check29" id = 'WORLDPOST'/>WORLDPOST</li>
+      <li><input type = "checkbox" name = "check30" id = 'FIFTY'/>FIFTY</li>
+      <li><input type = "checkbox" name = "check31" id = 'ARTS'/>ARTS</li>
+      <li><input type = "checkbox" name = "check32" id = 'WELLNESS'/>WELLNESS</li>
+      <li><input type = "checkbox" name = "check33" id = 'PARENTING'/>PARENTING</li>
+      <li><input type = "checkbox" name = "check34" id = 'HOME & LIVING'>HOME & LIVING</li>
+      <li><input type = "checkbox" name = "check35" id = 'STYLE & BEAUTY'/>STYLE & BEAUTY</li>
+      <li><input type = "checkbox" name = "check36" id = 'DIVORCE'/>DIVORCE</li>
+      <li><input type = "checkbox" name = "check37" id = 'WEDDINGS'/>WEDDINGS</li>
+      <li><input type = "checkbox" name = "check38" id = 'FOOD & DRINK'/>FOOD & DRINK</li>
+      <li><input type = "checkbox" name = "check39" id = 'MONEY'/>MONEY</li>
+      <li><input type = "checkbox" name = "check40" id = 'ENVIRONMENT'/>ENVIRONMENT</li>
+      <li><input type = "checkbox" name = "check41" id = 'CULTURE & ARTS'/>CULTURE & ARTS</li>
+    </ul>
+  </div>
+  
+ <script type = "text/javascript">
+    var arr = Array.from(Array(41).keys());
+    
+
+    $(document).ready(function() {
+      $(".selectpicker").selectpicker();
+    });
+    var checkList = document.getElementById('list1');
+  checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+  if (checkList.classList.contains('visible'))
+    checkList.classList.remove('visible');
+  else
+    checkList.classList.add('visible');
+}
+  </script>
+  
+  <div class="md-form md-outline input-with-post-icon datepicker">
+    <input placeholder="Select date" type="date" name="date" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="Affiliation">Affiliation</label>
+    <input type="text" class="form-control" name="affiliation" placeholder="Affiliation">
+    </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>  
+
+</body>
+</html>

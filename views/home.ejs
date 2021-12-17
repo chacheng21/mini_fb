@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/home.css" type = "text/css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/connect.js"></script>
+</head>    
+<body>
+  <div id="navigation_bar">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+      <a class="navbar-brand" href="/Home">Pennbook</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/Home">Home </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/walls?user=<%= user%>">Personal Wall</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/chat">Chat</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/friends">Friends</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/searchArticlesPage"> Search Articles</a>
+          </li>
+          <li class = "nav-item">
+            <a class="nav-link" href='/friendVisualizer'>Friend Visualizer</a>
+          </li>
+          <li class = "nav-item">
+            <a class="nav-link" href='/logout'>Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  
+  <br>
+
+  <div class = "posts">
+    <div class = "container-fluid" id = "post_to_wall">
+      <form action = "/createPost?host=<%=user%>" method = "post">
+      <p>
+          <label>What On Your Mind? </label>
+          <p>
+          <textarea name="post" rows = "4", cols = "50"></textarea>
+          </p>
+      </p>
+      <p>
+          <input type="submit" class="btn btn-primary" value="Post">
+      </p>
+      </form>
+    </div>
+    <hr>
+    <div id = "postRefresh">
+    <% if (posts != false) { %>
+        <% for (var i = 0; i < posts.length; i++) { %>
+          <div class = "post">
+            <div class = "username">
+              <a href="/walls?user=<%= posts[i].user%>"> <h4> <%= posts[i].user %></h4> </a>
+            </div>
+            <div class = "author_details">
+              <small> <a href="/walls?user=<%= posts[i].Author%>"> <%= posts[i].Author%>  </a> <%= posts[i].dateTime %> </small>
+            </div>
+            <br>
+            <h5><%= posts[i].Post %></h5>
+            <br>
+            <hr>
+            <a href="/post?post=<%=posts[i].id%>&user=<%=posts[i].Author%>&timeStamp=<%=posts[i].time%>">View Comments</a>
+            <div class = "comment">
+              <br>
+              <form class = "form-inline" action = "/commentPost?post=<%=posts[i].id%>&user=<%=posts[i].Author%>&timeStamp=<%=posts[i].time%>" method = "post">
+                  <div class = "form-group col-md-6">
+                    <input type = "text" class="form-control" name="<%=posts[i].id%>" > </input>
+                  </div>
+                  <br>
+                  <input type="submit" class="btn btn-primary mb-2" value="Comment">
+              </form>
+            </div>
+          </div>
+        <% } %> 
+        <script type="text/javascript">
+          function loadMore() {
+            $("div.post:hidden").slice(0, 5).show();
+            if($("div.post:hidden").length == 0) {
+                alert("No more results!");
+            }
+          }
+          function loadMoreFirst() {
+            $("div.post:hidden").slice(0, 5).show();
+          }
+          loadMoreFirst();
+        </script>
+        <br>
+        <button class="btn btn-primary mb-2" onclick = loadMore()>View More</button> 
+    <% } %>
+  </div>
+  </div>
+
+  <div class = "left">
+    <div class = "friends">
+      <h4>Your Friends:</h4>
+      <ul>
+        <% for (var i = 0; i < friends.length - 1; i++) { %>
+          <%if (friends[i].isonline) {%>
+            <li class="onlinefriendhome"> <a href='walls?user="<%= friends[i].username %>"'> <%= friends[i].username %> </a></li>
+          <%} else {%>
+            <li > <a href='walls?user="<%= friends[i].username %>"'> <%= friends[i].username %> </a></li>
+          <%}%>  
+        <% } %>
+      </ul>
+    </div>
+    <hr>
+  </div>
+
+  <div class = "right">
+    <div class = "edit_account">
+      <h4> Edit Your Account: </h4>
+      <form action = "/updateAccount" method = "post">
+        <div class = "form-group">
+            <% if (userDetails.err === true) { %>
+                <h4> An error occured when updating your account.  Check that none of the fields are blank. </h4>
+            <% } else if (userDetails.message !== null ){ %>
+                <h4> <%= userDetails.message %> </h4>
+            <% } %>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="Password">Password</label>
+          <input type="password" class="form-control" name="password" placeholder="Enter Your New Password">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" class="form-control" name="email" value = <%- userDetails.Email%> >
+        </div>
+        <br>
+        <div id="list1" class="dropdown-check-list" tabindex="100">
+          <span class="anchor">Select Categories of Interest</span>
+          <ul class="items">
+            <li><input type = "checkbox" name = "check1" id = 'CRIME' <%= userDetails.categories.has('CRIME') ? "checked" : "" %> /> CRIME </li>
+            <li><input type = "checkbox" name = "check2" id = 'ENTERTAINMENT' <%= userDetails.categories.has('ENTERTAINMENT') ? "checked" : "" %> />ENTERTAINMENT</li>
+            <li><input type = "checkbox" name = "check3" id = 'WORLD NEWS' <%= userDetails.categories.has("WORLD NEWS") ? "checked" : "" %> />WORLD NEWS</li>
+            <li><input type = "checkbox" name = "check4" id = 'IMPACT' <%= userDetails.categories.has('IMPACT') ? "checked" : "" %>/>IMPACT</li>
+            <li><input type = "checkbox" name = "check5" id = 'POLITICS' <%= userDetails.categories.has('POLITICS') ? "checked" : "" %>/>POLITICS</li>
+            <li><input type = "checkbox" name = "check6" id = 'WEIRD NEWS' <%= userDetails.categories.has('WEIRD NEWS') ? "checked" : "" %>/>WEIRD NEWS</li>
+            <li><input type = "checkbox" name = "check7" id = 'BLACK VOICES' <%= userDetails.categories.has('BLACK VOICES') ? "checked" : "" %>/>BLACK VOICES</li>
+            <li><input type = "checkbox" name = "check8" id = 'WOMEN' <%= userDetails.categories.has('WOMEN') ? "checked" : "" %>/>WOMEN</li>
+            <li><input type = "checkbox" name = "check9" id = 'COMEDY' <%= userDetails.categories.has('COMEDY') ? "checked" : "" %>/>COMEDY</li>
+            <li><input type = "checkbox" name = "check10" id = 'QUEER VOICES' <%= userDetails.categories.has('QUEER VOICES') ? "checked" : "" %>/>QUEER VOICES</li>
+            <li><input type = "checkbox" name = "check11" id = 'SPORTS' <%= userDetails.categories.has('SPORTS') ? "checked" : "" %>/>SPORTS</li>
+            <li><input type = "checkbox" name = "check12" id = 'BUSINESS' <%= userDetails.categories.has('BUSINESS') ? "checked" : "" %>/>BUSINESS</li>
+            <li><input type = "checkbox" name = "check13" id = 'TRAVEL' <%= userDetails.categories.has('TRAVEL') ? "checked" : "" %>/>TRAVEL</li>
+            <li><input type = "checkbox" name = "check14" id = 'MEDIA' <%= userDetails.categories.has('MEDIA') ? "checked" : "" %>/>MEDIA</li>
+            <li><input type = "checkbox" name = "check15" id = 'TECH' <%= userDetails.categories.has('TECH') ? "checked" : "" %>/>TECH</li>
+            <li><input type = "checkbox" name = "check16" id = 'RELIGION' <%= userDetails.categories.has('RELIGION') ? "checked" : "" %>/>RELIGION</li>
+            <li><input type = "checkbox" name = "check17" id = 'SCIENCE' <%= userDetails.categories.has('SCIENCE') ? "checked" : "" %>/>SCIENCE</li>
+            <li><input type = "checkbox" name = "check18" id = 'LATINO VOICES' <%= userDetails.categories.has('LATINO VOICES') ? "checked" : "" %>/>LATINO VOICES</li>
+            <li><input type = "checkbox" name = "check19" id = 'EDUCATION' <%= userDetails.categories.has('EDUCATION') ? "checked" : "" %>/>EDUCATION</li>
+            <li><input type = "checkbox" name = "check20" id = 'COLLEGE' <%= userDetails.categories.has('COLLEGE') ? "checked" : "" %>/>COLLEGE</li>
+            <li><input type = "checkbox" name = "check21" id = 'PARENTS' <%= userDetails.categories.has('PARENTS') ? "checked" : "" %>/>PARENTS</li>
+            <li><input type = "checkbox" name = "check22" id = 'ARTS & CULTURE'<%= userDetails.categories.has('ARTS & CULTURE') ? "checked" : "" %> />ARTS & CULTURE</li>
+            <li><input type = "checkbox" name = "check23" id = 'STYLE' <%= userDetails.categories.has('STYLE') ? "checked" : "" %>/>STYLE</li>
+            <li><input type = "checkbox" name = "check24" id = 'GREEN' <%= userDetails.categories.has('GREEN') ? "checked" : "" %>/>GREEN</li>
+            <li><input type = "checkbox" name = "check25" id = 'TASTE' <%= userDetails.categories.has('TASTE') ? "checked" : "" %>/>TASTE</li>
+            <li><input type = "checkbox" name = "check26" id = 'HEALTHY LIVING' <%= userDetails.categories.has('HEALTHY LIVING') ? "checked" : "" %>/>HEALTHY LIVING</li>
+            <li><input type = "checkbox" name = "check27" id = 'THE WORLDPOST' <%= userDetails.categories.has('THE WORLDPOST') ? "checked" : "" %>/>THE WORLDPOST</li>
+            <li><input type = "checkbox" name = "check28" id = 'GOOD NEWS' <%= userDetails.categories.has('GOOD NEWS') ? "checked" : "" %>/>GOOD NEWS</li>
+            <li><input type = "checkbox" name = "check29" id = 'WORLDPOST' <%= userDetails.categories.has('WORLDPOST') ? "checked" : "" %>/>WORLDPOST</li>
+            <li><input type = "checkbox" name = "check30" id = 'FIFTY' <%= userDetails.categories.has('FIFTY') ? "checked" : "" %>/>FIFTY</li>
+            <li><input type = "checkbox" name = "check31" id = 'ARTS' <%= userDetails.categories.has('ARTS') ? "checked" : "" %>/>ARTS</li>
+            <li><input type = "checkbox" name = "check32" id = 'WELLNESS' <%= userDetails.categories.has('WELLNESS') ? "checked" : "" %>/>WELLNESS</li>
+            <li><input type = "checkbox" name = "check33" id = 'PARENTING' <%= userDetails.categories.has('PARENTING') ? "checked" : "" %>/>PARENTING</li>
+            <li><input type = "checkbox" name = "check34" id = 'HOME & LIVING' <%= userDetails.categories.has('HOME & LIVING') ? "checked" : "" %>/>HOME & LIVING</li>
+            <li><input type = "checkbox" name = "check35" id = 'STYLE & BEAUTY' <%= userDetails.categories.has('STYLE & BEAUTY') ? "checked" : "" %>/>STYLE & BEAUTY</li>
+            <li><input type = "checkbox" name = "check36" id = 'DIVORCE' <%= userDetails.categories.has('DIVORCE') ? "checked" : "" %>/>DIVORCE</li>
+            <li><input type = "checkbox" name = "check37" id = 'WEDDINGS' <%= userDetails.categories.has('WEDDINGS') ? "checked" : "" %>/>WEDDINGS</li>
+            <li><input type = "checkbox" name = "check38" id = 'FOOD & DRINK' <%= userDetails.categories.has('FOOD & DRINK') ? "checked" : "" %>/>FOOD & DRINK</li>
+            <li><input type = "checkbox" name = "check39" id = 'MONEY' <%= userDetails.categories.has('MONEY') ? "checked" : "" %>/>MONEY</li>
+            <li><input type = "checkbox" name = "check40" id = 'ENVIRONMENT' <%= userDetails.categories.has('ENVIRONMENT') ? "checked" : "" %>/>ENVIRONMENT</li>
+            <li><input type = "checkbox" name = "check41" id = 'CULTURE & ARTS' <%= userDetails.categories.has('CULTURE & ARTS') ? "checked" : "" %>/>CULTURE & ARTS</li>
+          </ul>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <script type = "text/javascript">
+        var arr = Array.from(Array(41).keys());
+        $(document).ready(function() {
+          $(".selectpicker").selectpicker();
+        });
+        var checkList = document.getElementById('list1');
+        checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        if (checkList.classList.contains('visible'))
+            checkList.classList.remove('visible');
+        else
+            checkList.classList.add('visible');
+        }
+      </script> 
+    </div>  
+    <hr>
+
+    <div class = "articles">
+      <div class = "recommended_articles">
+        <h4> Your Suggested Article:</h4>
+        <% if (isArticleRandom === "true" ) { %>
+              <small> We have no articles to recommend for you at this moment. Enjoy this sponsored article on Scallops!</small>
+        <% } %>
+        <div class = 'article'>
+          <div class = 'article_title'>
+              <h4> <a href = "<%= article.link %>"> <%= article.headline %> </a></h4> 
+          </div> 
+          <div class = 'author'>
+              <h6> By: <%= article.authors %></h6>
+              <br>
+          </div>
+          <div class = 'date'>
+              <h6> Written On: <%= article.date %></h6>
+              <br>
+          </div>
+          <div class = 'category'>
+              <h6> Category: <%= article.category %> </h6>  
+          </div>
+          <div class = 'description'>
+              <p> <%= article.short_description %> </p>  
+          </div>
+          <div class = 'likeUnlike'>
+              <% if (article.isLiked === true) { %>
+                <input id = "article" onclick = "changeLike()" type="submit" value="Unlike" class="btn btn-primary">
+              <% } else { %>
+                <input id = "article" onclick = "changeLike()" type="submit" value="Like" class="btn btn-primary">
+              <% } %>
+
+              <script>
+                function changeLike() {
+                  if ($("#article").val() === "Like") {
+                    $("#article").val("Unlike");
+                    $.ajax({
+                      type: 'POST',
+                      url: "/likeArticle?article=<%= article.article%>&isLiked=false",
+                      data: {article: article= "<%= article.article%>", isLiked: false
+                      }
+                    })
+                  } else {
+                    $("#article").val("Like");
+                    $.ajax({
+                      type: 'POST',
+                      url: "/likeArticle?article=<%= article.article%>&isLiked=true",
+                      data: {article: article= "<%= article.article%>", isLiked: true
+                      }
+                    })
+                  }
+                }
+              </script>
+          </div>
+      </div>
+      </div>
+    </div>
+    
+      
+  </div>
+
+  <script>
+    var refreshPosts = function() {
+      var newPostsHash = {};
+      var postData = {};
+      $.post('/onlyHomePosts', function(data) {
+        if (data != false){
+          var list = document.getElementById("postRefresh");
+          list.innerHTML = "";
+
+          for (var i = 0; i < data.length; i++) {
+            var post = document.createElement("div");
+            post.className = "post";
+            var header = "<h4>" + data[i].user + "</h4>" + "<small>" + data[i].Author + " on " + data[i].dateTime + "</small> <br> <br>";
+            var content = "<h5>" + data[i].Post + "</h5> <br>";
+            post.innerHTML = header + content;
+            var link = document.createElement('a');
+            link.setAttribute("href", "/post?post=" + data[i].id + "&user=" + data[i].Author + "&timeStamp=" + data[i].time);
+            link.appendChild(document.createTextNode('View Post'));
+            post.appendChild(link);
+            var comment = document.createElement("div");
+            comment.className = "comment";
+            var form = document.createElement('FORM');
+            form.method = 'POST';
+            form.setAttribute("action", "/commentPost?post=" + data[i].id + "&user=" + data[i].Author + "&timeStamp=" + data[i].time);
+  
+            
+            var input1 = document.createElement("INPUT");
+            input1.type = "TEXT";
+            input1.name = data[i].id;
+            var input2 = document.createElement("INPUT");
+            input2.type = "SUBMIT";
+            input2.value = "Comment"; 
+            form.append(input1);
+            form.append(input2);
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML+= "<small> Add a Comment: </small>";
+            paragraph.appendChild(form);
+            comment.appendChild(paragraph);
+            post.appendChild(comment);
+            list.appendChild(post);
+            /*
+            list.innerHTML += "<div class = 'post'> <h4> " + data[i].user + "</h4> " + "<small>" + data[i].Author + " on " + data[i].dateTime;
+            list.innerHTML += "</small> <br> <br> <h5>" + data[i].Post + "</h5> <br>"; 
+            list.innerHTML += "<a href = '/post?post=" + data[i].id + "&user=" + data[i].Author + "&timeStamp=" + data[i].time + "'>"; 
+            list.innerHTML += "View Post</a> <br> <div class = 'comment'> <form action = '/commentPost?post=" + data[i].id + "&user=" + data[i].Author + "&timeStamp=" + data[i].time + "'' method = 'post'>";
+            list.innerHTML += "<p><small> Add a Comment: </small> <input type = 'text' name = '" + data[i].id + "'></input><input type = 'submit' value = 'Comment'></input></p></form></div></div>";
+            */
+          }
+        }
+        console.log("completed");
+      });
+    };
+    $("postRefresh").ready(function() {
+ 		setInterval('refreshPosts()', 20000);
+ 	  });
+  </script>
+
+</body>
+</html>

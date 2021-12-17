@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/searchArticles.css" type = "text/css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/connect.js"></script>
+</head>    
+<body>
+    <div id="navigation_bar">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+          <a class="navbar-brand" href="/Home">Pennbook</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="/Home">Home </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/walls?user=<%= user%>">Personal Wall</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/chat">Chat</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/friends">Friends</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/searchArticlesPage"> Search Articles</a>
+              </li>
+              <li class = "nav-item">
+                <a class="nav-link" href='/friendVisualizer'>Friend Visualizer</a>
+              </li>
+              <li class = "nav-item">
+                <a class="nav-link" href='/logout'>Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      
+      <br>
+
+<div class = "posts">
+    <div class = "searchArticle">
+        <h3> Enter Your Search Terms Below </h3>
+        <input type="search" id = "searchTerms">
+        <br>
+        <br>
+        <button onclick="func()" class="btn btn-primary">Search</button>
+    </div>
+    <script type = "text/javascript">
+        function func() {
+            var terms = $('#searchTerms').val()
+            location.href = '/searchArticlesPage?search="' + terms + '"';
+        } 
+
+        function loadMore() {
+            $("div.article:hidden").slice(0, 10).show();
+            if($("div.article:hidden").length == 0) {
+                alert("No more results!");
+            }
+        }
+
+    </script>
+
+    <% if (noResults === true) { %>
+        <h1>Sorry! No relevant results</h1>
+    <% } %>
+
+    <% if (articles !== false) { %>
+        <hr>
+        <h1> There are <%= articles.length %> results: </h1>
+        <% for (var i = 0; i < articles.length; i++) { %>
+                <div class = 'article'>
+                    <div class = 'article_title'>
+                        <h4> <a href = "<%= articles[i].link %>"> <%= articles[i].headline %> </a></h4> 
+                    </div> 
+                    <div class = 'author'>
+                        <h6> By: <%= articles[i].authors %></h6>
+                        <br>
+                    </div>
+                    <div class = 'date'>
+                        <h6> Written On: <%= articles[i].date %></h6>
+                        <br>
+                    </div>
+                    <div class = 'category'>
+                        <h6> Category: <%= articles[i].category %> </h6>  
+                    </div>
+                    <div class = 'description'>
+                        <p> <%= articles[i].short_description %> </p>  
+                    </div>
+                    <div class = 'matches'>
+                        <small> Relevant Matches: <%= articles[i]['Number of Relevant Terms'] %> </small>
+                    </div>
+                    <div class = 'likeUnlike'>
+                        <% if (articles[i].isLiked === true) { %>
+                            <input id = "<%= i %>" onclick = '(function(){ 
+                                if ($("#" + "<%= i %>").val() === "Like") {
+                                    $("#" + "<%= i %>").val("Unlike");
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/likeArticle",
+                                        data: {article: "<%=articles[i].article %>", isLiked: false }
+                                    })
+                                } else {
+                                    $("#" + "<%= i %>").val("Like");
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/likeArticle",
+                                        data: {article: "<%=articles[i].article %>", isLiked: true }
+                                    })
+                                }
+                            })();' type="submit" class="btn btn-primary" value="Unlike">
+                        <% } else { %>
+                            <input id = "<%= i %>" onclick = '(function(){ 
+                                if ($("#" + "<%= i %>").val() === "Like") {
+                                    $("#" + "<%= i %>").val("Unlike");
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/likeArticle",
+                                        data: {article: "<%=articles[i].article %>", isLiked: false }
+                                    })
+                                } else {
+                                    $("#" + "<%= i %>").val("Like");
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/likeArticle",
+                                        data: {article: "<%=articles[i].article %>", isLiked: true }
+                                    })
+                                }
+                            })();' type="submit" class="btn btn-primary" value="Like">
+                        <% } %>
+                    </div>
+                </div>
+        <% } %>
+        <script type="text/javascript">
+            loadMore();
+         </script>
+        <button onclick = loadMore() class="btn btn-primary">View More</button>
+    <% } %>
+</div>
+</body>
+</html>

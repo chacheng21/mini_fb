@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/login.css" type = "text/css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class = "top-banner">
+            <h1>NETS 212 Final Project</h1>
+        </div>
+    </div>
+  <div class = "container-fluid">
+      <div class = "form">
+  
+        <form action = "/LoginAuth" method = "post">
+            <%if (message != null) { %>
+            <font color="red"><%= message %><p>
+            <% } %>
+            <p>
+                <label>Username</label>
+                <input type = "text" name="username" value = <%= password %>>
+            </p>
+            <p>
+                <label>Password</label>
+                <input type = "text" name = "password" value = <%= password %>>
+            </p>
+            <p>
+                <input type="submit" value="Login">
+            </p>
+        </form>
+  <form action="/signup" method="post">
+    <input type="submit" value="Create Account">
+  </form>
+  </div>
+    </div>
+</body>
+</html>

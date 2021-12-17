@@ -1,0 +1,55 @@
+.post {
+  border-radius: 10px;
+  border: 2px solid rgb(197, 197, 197);
+  padding: 30px;
+  width: auto;
+  height: auto;
+}
+
+.post a {
+  color: rgb(1, 111, 255);
+  text-decoration: none;
+}
+
+.post a h4:hover {
+  color: rgb(228, 68, 68);
+  text-decoration: underline;
+}
+
+.post .author_details {
+  color: rgb(163, 163, 163);
+  text-decoration: none;
+}
+
+.post .author_details a {
+  color: rgb(1, 111, 255);
+  text-decoration: none;
+}
+
+.post .author_details a:hover {
+  color: rgb(228, 68, 68);
+  text-decoration: underline;
+}
+
+#navigation_bar {
+  padding-left:3%; /* or whatever */
+  padding-right:3%
+}
+
+.posts{
+  padding-left:20%; /* or whatever */
+  padding-right:40%
+}
+
+#post_to_wall{
+  border-radius: 10px;
+  border: 2px solid rgb(240, 240, 240);
+  padding: 30px;
+  width: auto;
+  height: auto;
+  background: linear-gradient(rgb(255, 255, 255), rgb(240, 240, 240));
+}
+
+.navbar.navbar-expand-lg.navbar-light{
+  padding: 10px;
+}

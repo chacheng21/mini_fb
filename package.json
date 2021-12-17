@@ -1,0 +1,22 @@
+{
+    "name": "final-project",
+    "description": "NETS 212 FInal Project",
+    "version": "0.0.1",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "async": "*",
+        "aws-sdk": "*",
+        "axios": "^0.24.0",
+        "bcrypt": "^5.0.1",
+        "ejs": "*",
+        "express": "*",
+        "express-session": "^1.17.2",
+        "jquery": "^3.6.0",
+        "lru-cache": "*",
+        "natural": "^5.1.11",
+        "socket.io": "^4.4.0",
+        "stemmer": "^2.0.0"
+    }
+}

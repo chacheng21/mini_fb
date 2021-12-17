@@ -1,0 +1,31 @@
+.article {
+  display: none;
+  border-radius: 10px;
+  border: 2px solid rgb(197, 197, 197);
+  padding: 30px;
+  width: auto;
+  height: auto;
+}
+
+.searchArticle {
+  border-radius: 10px;
+  border: 2px solid rgb(197, 197, 197);
+  background: linear-gradient(rgb(255, 255, 255), rgb(240, 240, 240));
+  padding: 30px;
+  width: auto;
+  height: auto;
+}
+
+#navigation_bar {
+  padding-left:3%; /* or whatever */
+  padding-right:3%
+}
+
+.posts{
+  padding-left:20%; /* or whatever */
+  padding-right:40%
+}
+
+.navbar.navbar-expand-lg.navbar-light{
+  padding: 10px;
+}

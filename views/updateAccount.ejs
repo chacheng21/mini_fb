@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">  
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/css/signup.css" type = "text/css">
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/connect.js"></script>
+</head>
+<body>
+<form action = "/updateAccount" method = "post">
+  <div class = "form-group">
+      <% if (err === true) { %>
+           <h4> An error occured when updating your account.  Check that none of the fields are blank. </h4>
+      <% } else if (message !== null ){ %>
+           <h4> <%= message %> </h4>
+      <% } %>
+  </div>
+  <div class="form-group">
+    <label for="Password">Password</label>
+    <input type="password" class="form-control" name="password" placeholder="Enter Your Password">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" name="email" value = <%- Email%> >
+  </div>
+  <div id="list1" class="dropdown-check-list" tabindex="100">
+    <span class="anchor">Select Categories of Interest</span>
+    <ul class="items">
+      <li><input type = "checkbox" name = "check1" id = 'CRIME' <%= categories.has('CRIME') ? "checked" : "" %> /> CRIME </li>
+      <li><input type = "checkbox" name = "check2" id = 'ENTERTAINMENT' <%= categories.has('ENTERTAINMENT') ? "checked" : "" %> />ENTERTAINMENT</li>
+      <li><input type = "checkbox" name = "check3" id = 'WORLD NEWS' <%= categories.has("WORLD NEWS") ? "checked" : "" %> />WORLD NEWS</li>
+      <li><input type = "checkbox" name = "check4" id = 'IMPACT' <%= categories.has('IMPACT') ? "checked" : "" %>/>IMPACT</li>
+      <li><input type = "checkbox" name = "check5" id = 'POLITICS' <%= categories.has('POLITICS') ? "checked" : "" %>/>POLITICS</li>
+      <li><input type = "checkbox" name = "check6" id = 'WEIRD NEWS' <%= categories.has('WEIRD NEWS') ? "checked" : "" %>/>WEIRD NEWS</li>
+      <li><input type = "checkbox" name = "check7" id = 'BLACK VOICES' <%= categories.has('BLACK VOICES') ? "checked" : "" %>/>BLACK VOICES</li>
+      <li><input type = "checkbox" name = "check8" id = 'WOMEN' <%= categories.has('WOMEN') ? "checked" : "" %>/>WOMEN</li>
+      <li><input type = "checkbox" name = "check9" id = 'COMEDY' <%= categories.has('COMEDY') ? "checked" : "" %>/>COMEDY</li>
+      <li><input type = "checkbox" name = "check10" id = 'QUEER VOICES' <%= categories.has('QUEER VOICES') ? "checked" : "" %>/>QUEER VOICES</li>
+      <li><input type = "checkbox" name = "check11" id = 'SPORTS' <%= categories.has('SPORTS') ? "checked" : "" %>/>SPORTS</li>
+      <li><input type = "checkbox" name = "check12" id = 'BUSINESS' <%= categories.has('BUSINESS') ? "checked" : "" %>/>BUSINESS</li>
+      <li><input type = "checkbox" name = "check13" id = 'TRAVEL' <%= categories.has('TRAVEL') ? "checked" : "" %>/>TRAVEL</li>
+      <li><input type = "checkbox" name = "check14" id = 'MEDIA' <%= categories.has('MEDIA') ? "checked" : "" %>/>MEDIA</li>
+      <li><input type = "checkbox" name = "check15" id = 'TECH' <%= categories.has('TECH') ? "checked" : "" %>/>TECH</li>
+      <li><input type = "checkbox" name = "check16" id = 'RELIGION' <%= categories.has('RELIGION') ? "checked" : "" %>/>RELIGION</li>
+      <li><input type = "checkbox" name = "check17" id = 'SCIENCE' <%= categories.has('SCIENCE') ? "checked" : "" %>/>SCIENCE</li>
+      <li><input type = "checkbox" name = "check18" id = 'LATINO VOICES' <%= categories.has('LATINO VOICES') ? "checked" : "" %>/>LATINO VOICES</li>
+      <li><input type = "checkbox" name = "check19" id = 'EDUCATION' <%= categories.has('EDUCATION') ? "checked" : "" %>/>EDUCATION</li>
+      <li><input type = "checkbox" name = "check20" id = 'COLLEGE' <%= categories.has('COLLEGE') ? "checked" : "" %>/>COLLEGE</li>
+      <li><input type = "checkbox" name = "check21" id = 'PARENTS' <%= categories.has('PARENTS') ? "checked" : "" %>/>PARENTS</li>
+      <li><input type = "checkbox" name = "check22" id = 'ARTS & CULTURE'<%= categories.has('ARTS & CULTURE') ? "checked" : "" %> />ARTS & CULTURE</li>
+      <li><input type = "checkbox" name = "check23" id = 'STYLE' <%= categories.has('STYLE') ? "checked" : "" %>/>STYLE</li>
+      <li><input type = "checkbox" name = "check24" id = 'GREEN' <%= categories.has('GREEN') ? "checked" : "" %>/>GREEN</li>
+      <li><input type = "checkbox" name = "check25" id = 'TASTE' <%= categories.has('TASTE') ? "checked" : "" %>/>TASTE</li>
+      <li><input type = "checkbox" name = "check26" id = 'HEALTHY LIVING' <%= categories.has('HEALTHY LIVING') ? "checked" : "" %>/>HEALTHY LIVING</li>
+      <li><input type = "checkbox" name = "check27" id = 'THE WORLDPOST' <%= categories.has('THE WORLDPOST') ? "checked" : "" %>/>THE WORLDPOST</li>
+      <li><input type = "checkbox" name = "check28" id = 'GOOD NEWS' <%= categories.has('GOOD NEWS') ? "checked" : "" %>/>GOOD NEWS</li>
+      <li><input type = "checkbox" name = "check29" id = 'WORLDPOST' <%= categories.has('WORLDPOST') ? "checked" : "" %>/>WORLDPOST</li>
+      <li><input type = "checkbox" name = "check30" id = 'FIFTY' <%= categories.has('FIFTY') ? "checked" : "" %>/>FIFTY</li>
+      <li><input type = "checkbox" name = "check31" id = 'ARTS' <%= categories.has('ARTS') ? "checked" : "" %>/>ARTS</li>
+      <li><input type = "checkbox" name = "check32" id = 'WELLNESS' <%= categories.has('WELLNESS') ? "checked" : "" %>/>WELLNESS</li>
+      <li><input type = "checkbox" name = "check33" id = 'PARENTING' <%= categories.has('PARENTING') ? "checked" : "" %>/>PARENTING</li>
+      <li><input type = "checkbox" name = "check34" id = 'HOME & LIVING' <%= categories.has('HOME & LIVING') ? "checked" : "" %>/>HOME & LIVING</li>
+      <li><input type = "checkbox" name = "check35" id = 'STYLE & BEAUTY' <%= categories.has('STYLE & BEAUTY') ? "checked" : "" %>/>STYLE & BEAUTY</li>
+      <li><input type = "checkbox" name = "check36" id = 'DIVORCE' <%= categories.has('DIVORCE') ? "checked" : "" %>/>DIVORCE</li>
+      <li><input type = "checkbox" name = "check37" id = 'WEDDINGS' <%= categories.has('WEDDINGS') ? "checked" : "" %>/>WEDDINGS</li>
+      <li><input type = "checkbox" name = "check38" id = 'FOOD & DRINK' <%= categories.has('FOOD & DRINK') ? "checked" : "" %>/>FOOD & DRINK</li>
+      <li><input type = "checkbox" name = "check39" id = 'MONEY' <%= categories.has('MONEY') ? "checked" : "" %>/>MONEY</li>
+      <li><input type = "checkbox" name = "check40" id = 'ENVIRONMENT' <%= categories.has('ENVIRONMENT') ? "checked" : "" %>/>ENVIRONMENT</li>
+      <li><input type = "checkbox" name = "check41" id = 'CULTURE & ARTS' <%= categories.has('CULTURE & ARTS') ? "checked" : "" %>/>CULTURE & ARTS</li>
+    </ul>
+  </div>
+  <script type = "text/javascript">
+    var arr = Array.from(Array(41).keys());
+    $(document).ready(function() {
+      $(".selectpicker").selectpicker();
+    });
+    var checkList = document.getElementById('list1');
+    checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+    if (checkList.classList.contains('visible'))
+        checkList.classList.remove('visible');
+    else
+        checkList.classList.add('visible');
+    }
+  </script> 
+  <br>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>  
+
+
+
+</body>
+</html>
