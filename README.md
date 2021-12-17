@@ -1,22 +1,3 @@
-# PennBook
-
-### Team Members
-
-- Scott Klein (sklein24)
-- Michael O’Farrell (mofar913)
-- Charles Cheng (chacheng)
-- Joel André (joelandr)
-
-### Features Implemented
-
-The complete assignment as instructed in the handout plus some extra credit.
-
-### Extra Credit
-
-- Chat Likes
-- Pagination
-- Autosuggest adding/removing friends
-
 ### List of Source files
 
 ```
@@ -79,14 +60,10 @@ The complete assignment as instructed in the handout plus some extra credit.
     └── walls.ejs
 ```
 
-### Declaration
-
-All of the code in the source files was written by us.
-
 ### Setup Instructions
-
 ```bash
 npm install # to install required packages
 npm start # to start the server
 ```
+
 
