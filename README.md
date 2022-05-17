@@ -59,11 +59,3 @@
     ├── updateAccount.ejs
     └── walls.ejs
 ```
-
-### Setup Instructions
-```bash
-npm install # to install required packages
-npm start # to start the server
-```
-
-
